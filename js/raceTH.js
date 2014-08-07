@@ -1,6 +1,11 @@
 //
 // This runs a simple simulation of a tortoise hare race.
-// The user is prompted for the length of the race
+// This simulation considers each animal to have a name, speed and focus.
+// The user is queried for the length of the race.
+// If a randomly generated value determines the animal is focused, the animal advances their speed
+// Otherwise, the animal remains at their position
+//
+// by Charles Gust
 //
   function toNumber(sbNumber) {
     return parseInt(sbNumber,10);
@@ -22,27 +27,41 @@
     document.write("<p>" + phrase + "</p>");
   }
 
+  // takes a number and a noun
+  // if the unit is not 1, a trailing "s" is adding which forms the plural
+  // of most English nouns
+  function addplurals(number, noun) {
+    var sReturn = number + " " + noun;
+
+    if( number != 1) {
+      sReturn = sReturn + "s";
+    }
+
+    return sReturn;
+  }
+
+
   function Animal(name, speed, focus) {
     this.name = name;
     this.speed = speed;
     this.focus = focus;
     this.position = 0;
 
+    // Here, move refers to a game move. The animal may or may not change position
+    // The move function also reports the result of the game move
+    // TODO: separate game logic from display logic, so that the move and any
+    // calculations are done first, and then the object is instructed to draw
     this.move = function() {
       var sAction;
-      var sAndIsNow = " and is now";
 
       if( Math.random() * 10 < this.focus) {
         this.position += this.speed;
 
-        if( this.speed == 1) {
-          sAction = "runs 1 yard" + sAndIsNow;
-        } else {
-          sAction = "runs " + this.speed + " yards" + sAndIsNow;
-        }
+        sAction = "runs " + addplurals(this.speed,"yard") + " and is now";
       } else {
         sAction = "is distracted and remains";
       }
+
       lineout(this.name + " " + sAction + " at " + this.position + " yards.");
     }
 
